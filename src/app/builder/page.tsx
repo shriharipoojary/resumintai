@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { Suspense, useState, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
@@ -12,7 +12,7 @@ import { TemplateSelector } from '@/components/builder/template-selector';
 import { ATSScorePanel } from '@/components/builder/ats-score';
 import { TemplateType, TEMPLATES } from '@/lib/types';
 
-export default function BuilderPage() {
+function BuilderContent() {
   const { resumeData, isDarkMode, toggleDarkMode, saveCurrentResume, setTemplate } = useResumeStore();
   const searchParams = useSearchParams();
 
@@ -241,5 +241,13 @@ export default function BuilderPage() {
         </Button>
       </div>
     </div>
+  );
+}
+
+export default function BuilderPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center text-muted-foreground">Loading...</div>}>
+      <BuilderContent />
+    </Suspense>
   );
 }
