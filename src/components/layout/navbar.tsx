@@ -53,7 +53,7 @@ export function Navbar() {
                 <polyline points="10 9 9 9 8 9" />
               </svg>
             </div>
-            <span className="text-lg font-bold gradient-text">ResumeAI</span>
+            <span className="text-lg font-bold gradient-text">Resumint AI</span>
           </Link>
 
           {/* Desktop Nav */}

@@ -349,7 +349,7 @@ export default function PortfolioPage() {
           <p className="text-xs text-slate-600">
             Built with ❤️ using{' '}
             <Link href="/" className="text-indigo-500 hover:text-indigo-400 transition-colors">
-              ResumeAI
+              Resumint AI
             </Link>
           </p>
         </div>

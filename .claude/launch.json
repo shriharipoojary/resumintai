@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Next.js Dev Server",
+      "runtimeExecutable": "/opt/homebrew/Cellar/node/25.8.1_1/bin/node",
+      "runtimeArgs": ["/Users/shriharipoojary/Desktop/test2/node_modules/next/dist/bin/next", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "Prisma Studio",
+      "runtimeExecutable": "/opt/homebrew/Cellar/node/25.8.1_1/bin/node",
+      "runtimeArgs": ["/Users/shriharipoojary/Desktop/test2/node_modules/prisma/build/index.js", "studio", "--url", "file:./prisma/dev.db"],
+      "port": 5555
+    }
+  ]
+}

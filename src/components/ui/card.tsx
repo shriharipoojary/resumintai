@@ -1,7 +1,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 
-interface CardProps {
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   className?: string;
   glass?: boolean;
@@ -9,7 +9,7 @@ interface CardProps {
   glow?: boolean;
 }
 
-export function Card({ children, className, glass, hover, glow }: CardProps) {
+export function Card({ children, className, glass, hover, glow, ...props }: CardProps) {
   return (
     <div
       className={cn(
@@ -19,6 +19,7 @@ export function Card({ children, className, glass, hover, glow }: CardProps) {
         glow && 'glow',
         className
       )}
+      {...props}
     >
       {children}
     </div>

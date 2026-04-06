@@ -17,7 +17,7 @@ export function Footer() {
                   <line x1="16" y1="17" x2="8" y2="17" />
                 </svg>
               </div>
-              <span className="text-lg font-bold gradient-text">ResumeAI</span>
+              <span className="text-lg font-bold gradient-text">Resumint AI</span>
             </Link>
             <p className="text-sm text-muted-foreground max-w-sm">
               Build stunning, ATS-optimized resumes and portfolio websites with the power of AI. Land your dream job faster.
@@ -53,7 +53,7 @@ export function Footer() {
 
         <div className="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} ResumeAI. All rights reserved.
+            © {new Date().getFullYear()} Resumint AI by Triverse Infotech. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             {/* Social icons */}

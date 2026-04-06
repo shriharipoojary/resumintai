@@ -64,7 +64,7 @@ const testimonials = [
     name: 'Sarah Chen',
     role: 'Software Engineer at Google',
     avatar: 'SC',
-    content: 'ResumeAI helped me land interviews at 5 FAANG companies. The AI suggestions were incredibly accurate and improved my bullet points dramatically.',
+    content: 'Resumint AI helped me land interviews at 5 FAANG companies. The AI suggestions were incredibly accurate and improved my bullet points dramatically.',
     rating: 5,
   },
   {
@@ -227,7 +227,7 @@ export default function HomePage() {
                       <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                       <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                     </svg>
-                    resumeai.app/builder
+                    resumint-ai.app/builder
                   </div>
                 </div>
               </div>
@@ -353,27 +353,29 @@ export default function HomePage() {
           >
             {templates.map((template) => (
               <motion.div key={template.name} variants={fadeInUp}>
-                <div className="group relative rounded-2xl overflow-hidden cursor-pointer hover:-translate-y-2 transition-all duration-300">
-                  <div className={`aspect-[3/4] bg-gradient-to-br ${template.color} p-4 flex flex-col justify-between`}>
-                    <Badge className="self-start bg-white/20 text-white border-white/30 text-xs">
-                      {template.tag}
-                    </Badge>
-                    <div className="space-y-2">
-                      <div className="h-2 bg-white/40 rounded w-3/4" />
-                      <div className="h-1.5 bg-white/25 rounded w-1/2" />
-                      <div className="h-px bg-white/20 my-2" />
-                      <div className="h-1.5 bg-white/20 rounded w-full" />
-                      <div className="h-1.5 bg-white/20 rounded w-5/6" />
-                      <div className="h-1.5 bg-white/20 rounded w-2/3" />
+                <Link href={`/builder?template=${template.name.toLowerCase()}`}>
+                  <div className="group relative rounded-2xl overflow-hidden cursor-pointer hover:-translate-y-2 transition-all duration-300">
+                    <div className={`aspect-[3/4] bg-gradient-to-br ${template.color} p-4 flex flex-col justify-between`}>
+                      <Badge className="self-start bg-white/20 text-white border-white/30 text-xs">
+                        {template.tag}
+                      </Badge>
+                      <div className="space-y-2">
+                        <div className="h-2 bg-white/40 rounded w-3/4" />
+                        <div className="h-1.5 bg-white/25 rounded w-1/2" />
+                        <div className="h-px bg-white/20 my-2" />
+                        <div className="h-1.5 bg-white/20 rounded w-full" />
+                        <div className="h-1.5 bg-white/20 rounded w-5/6" />
+                        <div className="h-1.5 bg-white/20 rounded w-2/3" />
+                      </div>
+                    </div>
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                      <span className="text-white font-semibold opacity-0 group-hover:opacity-100 transition-opacity text-sm">
+                        Use Template →
+                      </span>
                     </div>
                   </div>
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                    <span className="text-white font-semibold opacity-0 group-hover:opacity-100 transition-opacity text-sm">
-                      Use Template →
-                    </span>
-                  </div>
-                </div>
-                <p className="text-center text-sm font-medium mt-3 text-foreground">{template.name}</p>
+                  <p className="text-center text-sm font-medium mt-3 text-foreground">{template.name}</p>
+                </Link>
               </motion.div>
             ))}
           </motion.div>
@@ -601,7 +603,7 @@ export default function HomePage() {
                 Ready to Land Your Dream Job?
               </motion.h2>
               <motion.p variants={fadeInUp} className="text-lg opacity-90 mb-8 max-w-xl mx-auto">
-                Join 50,000+ professionals who built winning resumes with ResumeAI. Start building yours today — it&apos;s free.
+                Join 50,000+ professionals who built winning resumes with Resumint AI. Start building yours today — it&apos;s free.
               </motion.p>
               <motion.div variants={fadeInUp}>
                 <Link href="/builder">

@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useResumeStore } from '@/lib/store';
 import { Button } from '@/components/ui/button';
@@ -9,9 +10,19 @@ import { ResumeForm } from '@/components/builder/resume-form';
 import { ResumePreview } from '@/components/builder/resume-preview';
 import { TemplateSelector } from '@/components/builder/template-selector';
 import { ATSScorePanel } from '@/components/builder/ats-score';
+import { TemplateType, TEMPLATES } from '@/lib/types';
 
 export default function BuilderPage() {
-  const { resumeData, isDarkMode, toggleDarkMode, saveCurrentResume } = useResumeStore();
+  const { resumeData, isDarkMode, toggleDarkMode, saveCurrentResume, setTemplate } = useResumeStore();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const templateParam = searchParams.get('template');
+    if (templateParam) {
+      const valid = TEMPLATES.find((t) => t.key === templateParam);
+      if (valid) setTemplate(valid.key as TemplateType);
+    }
+  }, [searchParams, setTemplate]);
   const [showPreview, setShowPreview] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
 
@@ -46,9 +57,15 @@ export default function BuilderPage() {
     }
   }, [resumeData.personalInfo.fullName]);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     saveCurrentResume();
-    // Show a brief notification
+    // Persist to database (best-effort — does not block UI)
+    fetch('/api/resumes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ resume: resumeData }),
+    }).catch(() => {/* silent — localStorage is the fallback */});
+
     const el = document.getElementById('save-notification');
     if (el) {
       el.classList.remove('opacity-0');
@@ -73,7 +90,7 @@ export default function BuilderPage() {
                   <polyline points="14 2 14 8 20 8" />
                 </svg>
               </div>
-              <span className="text-sm font-bold gradient-text hidden sm:inline">ResumeAI</span>
+              <span className="text-sm font-bold gradient-text hidden sm:inline">Resumint AI</span>
             </Link>
             <span className="text-muted-foreground text-xs">/</span>
             <span className="text-sm font-medium text-foreground">Resume Builder</span>

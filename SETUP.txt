@@ -1,0 +1,140 @@
+================================================================================
+                        RESUMENOVA — SETUP GUIDE
+================================================================================
+
+STEP 1 — FREE POSTGRESQL DATABASE (NEON)
+─────────────────────────────────────────
+Neon gives you a free Postgres database, no credit card needed.
+
+1. Go to https://neon.tech → Sign up → Create project
+2. Name it "resumint-ai", pick the region closest to you
+3. Once created, click "Connection string" → copy the postgresql://... URL
+4. Open your .env file and replace the DATABASE_URL line:
+
+   DATABASE_URL="postgresql://neondb_owner:xxxx@ep-xxxx.us-east-1.aws.neon.tech/neondb?sslmode=require"
+
+Alternatives:
+  - Supabase  → https://supabase.com  (use the "Connection pooling" URI)
+  - Railway   → https://railway.app
+
+
+STEP 2 — GOOGLE OAUTH CREDENTIALS
+───────────────────────────────────
+1. Go to https://console.cloud.google.com
+2. Create a new project (top-left dropdown → New Project) — name it "Resumint AI"
+3. Left sidebar → APIs & Services → OAuth consent screen
+      - User type: External → Create
+      - App name: Resumint AI
+      - Support email: your email
+      - Developer contact: your email
+      - Save and Continue (skip scopes & test users)
+4. Left sidebar → APIs & Services → Credentials
+      - Click + Create Credentials → OAuth 2.0 Client ID
+      - Application type: Web application
+      - Name: Resumint AI Web
+      - Under "Authorized redirect URIs" → + Add URI:
+            http://localhost:3000/api/auth/callback/google
+      - Click Create
+5. Copy both values into your .env file:
+
+   GOOGLE_CLIENT_ID="123456789-abc.apps.googleusercontent.com"
+   GOOGLE_CLIENT_SECRET="GOCSPX-xxxxxxxxxxxxxxxx"
+
+
+STEP 3 — INITIALIZE THE DATABASE
+──────────────────────────────────
+Run these two commands in your project directory:
+
+   npx prisma generate
+   npx prisma db push
+
+You should see: "Your database is now in sync with your Prisma schema."
+
+
+STEP 4 — RUN THE APP
+─────────────────────
+   npm run dev
+
+Open http://localhost:3000 in your browser.
+Click Sign In → Continue with Google → sign in with your Google account.
+You will be redirected to /dashboard. Your user is now saved in the database.
+
+
+STEP 5 — GIVE YOURSELF ADMIN ACCESS
+─────────────────────────────────────
+   npx prisma studio
+
+This opens http://localhost:5555 in your browser (visual database UI).
+
+1. Click the User table
+2. Find your row (your email address)
+3. Click the "role" field → change USER to ADMIN
+4. Click "Save 1 change"
+
+Now visit http://localhost:3000/admin — you have full admin access.
+
+
+STEP 6 — DEPLOY TO VERCEL (OPTIONAL)
+──────────────────────────────────────
+Install Vercel CLI and deploy:
+
+   npm i -g vercel
+   vercel
+
+Then in the Vercel dashboard:
+   Project → Settings → Environment Variables
+
+Add all 5 variables:
+   DATABASE_URL       →  your Neon connection string
+   AUTH_SECRET        →  (already in your .env)
+   GOOGLE_CLIENT_ID   →  your Google client ID
+   GOOGLE_CLIENT_SECRET → your Google client secret
+   NEXTAUTH_URL       →  https://your-app.vercel.app
+
+Then go back to Google Cloud Console → Credentials → your OAuth Client
+and add the production redirect URI:
+
+   https://your-app.vercel.app/api/auth/callback/google
+
+Redeploy with:
+   vercel --prod
+
+
+YOUR .ENV FILE SHOULD LOOK LIKE THIS
+──────────────────────────────────────
+DATABASE_URL="postgresql://..."
+AUTH_SECRET="X2Ezlv2N4kxF0LK1Yg6g02KSn1GHzh8hI8M0bYaT3WE="
+GOOGLE_CLIENT_ID="your-client-id.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET="your-client-secret"
+NEXTAUTH_URL="http://localhost:3000"
+
+
+QUICK CHECKLIST
+────────────────
+  [ ] Neon account created, DATABASE_URL added to .env
+  [ ] Google Cloud project created
+  [ ] OAuth consent screen configured
+  [ ] OAuth Client ID created, credentials added to .env
+  [ ] npx prisma generate
+  [ ] npx prisma db push
+  [ ] npm run dev → sign in with Google
+  [ ] npx prisma studio → set role = ADMIN
+  [ ] Visit /admin → confirm admin dashboard loads
+
+================================================================================
+                              ADMIN PANEL ROUTES
+================================================================================
+  /admin           →  Analytics dashboard (charts, stats, recent logins)
+  /admin/users     →  All users (search, promote/demote admin, view details)
+  /admin/resumes   →  All resumes (search, preview, delete)
+
+================================================================================
+                              NORMAL USER ROUTES
+================================================================================
+  /                →  Landing page (public)
+  /auth            →  Sign in with Google
+  /dashboard       →  User's resume dashboard
+  /builder         →  Resume builder
+  /portfolio/[slug]→  Portfolio page
+
+================================================================================
