@@ -11,13 +11,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   events: {
     async signIn({ user }) {
       if (!user.id) return;
-      await prisma.user.update({
-        where: { id: user.id },
-        data: { lastLoginAt: new Date() },
-      });
-      await prisma.loginHistory.create({
-        data: { userId: user.id },
-      });
+      try {
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { lastLoginAt: new Date() },
+        });
+        await prisma.loginHistory.create({
+          data: { userId: user.id },
+        });
+      } catch (e) {
+        console.error('signIn event error:', e);
+      }
     },
   },
 });
